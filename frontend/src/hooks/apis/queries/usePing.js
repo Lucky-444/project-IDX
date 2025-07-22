@@ -6,7 +6,7 @@ export default function usePing() {
   const { isLoading, isError, data, error } = useQuery({
     //queryFn  -> used for making api request
     queryFn: pingApi,
-    //for cache we use key value pair
+     //for cache we use key value pair
     // so that we hve to maintain queryKey -> value
     queryKey: "ping",
     // cacheTime : 0,

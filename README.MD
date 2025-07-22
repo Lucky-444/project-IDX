@@ -22,6 +22,10 @@ https://antelo.medium.com/react-query-cachetime-vs-staletime-ec74defc483e
 
 https://stackoverflow.com/questions/72828361/what-are-staletime-and-cachetime-in-react-query
 
+`manually clear the cache using queryClient`
+that is inValidateQueries-> passed the queryKey 
+the keys of the queries you want to invalidate. This will remove them from the cache.
+
 
 
 
