@@ -1,22 +1,25 @@
 import { useCreateProject } from "../hooks/apis/mutations/useCreateProject.js";
-
+import { Button, Col, Flex, Row } from "antd";
 export const CreateProject = () => {
-  const { createProjectMutation  , isPending} = useCreateProject();
+  const { createProjectMutation, isPending } = useCreateProject();
   async function handleCreateProject() {
     console.log("going to trigger the api");
     try {
       await createProjectMutation();
       console.log("Now we should redirect to the Editor");
-      
     } catch (error) {
       console.log("Creating Project Error");
     }
   }
   return (
-    <div>
-      <h1> Create Project </h1>
-      <button onClick={handleCreateProject}> Create Project </button>
-      {isPending && <p>Creating a new Project for You ......</p>}
-    </div>
+    <Row>
+      <Col span={24}>
+        <Flex justify="center" align="center">
+          <Button type="primary" onClick={handleCreateProject}>
+            Create Playground
+          </Button>
+        </Flex>
+      </Col>
+    </Row>
   );
 };
