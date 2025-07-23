@@ -6,39 +6,38 @@ import { FileIcon } from "../../atoms/FileIcon/FileIcon";
 // import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 
 export const TreeNode = ({ fileFolderData }) => {
+  const [visibility, setVisibility] = useState({});
+  function toggleVisibility(name) {
+    setVisibility({
+      ...visibility,
+      [name]: !visibility[name],
+    });
+  }
 
-   const [visibility, setVisibility] = useState({});
-    function toggleVisibility(name) {
-        setVisibility({
-            ...visibility,
-            [name]: !visibility[name]
-        })
-    }
+  function computeExtension(fileFolderData) {
+    const names = fileFolderData.name.split(".");
+    return names[names.length - 1];
+  }
 
-    function computeExtension(fileFolderData) {
-        const names = fileFolderData.name.split(".");
-        return names[names.length - 1];
-    }
+  function handleDoubleClick(fileFolderData) {
+    console.log("Double clicked on", fileFolderData);
+    editorSocket.emit("readFile", {
+      pathToFileOrFolder: fileFolderData.path,
+    });
+  }
 
-    function handleDoubleClick(fileFolderData) {
-        console.log("Double clicked on", fileFolderData);
-        editorSocket.emit("readFile", {
-            pathToFileOrFolder: fileFolderData.path
-        })
-    }
+  // function handleContextMenuForFiles(e, path) {
+  //     e.preventDefault();
+  //     console.log("Right clicked on", path, e);
+  //     setFile(path);
+  //     setFileContextMenuX(e.clientX);
+  //     setFileContextMenuY(e.clientY);
+  //     setFileContextMenuIsOpen(true);
+  // }
 
-    // function handleContextMenuForFiles(e, path) {
-    //     e.preventDefault();
-    //     console.log("Right clicked on", path, e);
-    //     setFile(path);
-    //     setFileContextMenuX(e.clientX);
-    //     setFileContextMenuY(e.clientY);
-    //     setFileContextMenuIsOpen(true);
-    // }
-    
-    useEffect(() => {
-        console.log("Visibility changed", visibility); 
-    }, [visibility])
+  useEffect(() => {
+    console.log("Visibility changed", visibility);
+  }, [visibility]);
 
   return (
     fileFolderData && (
@@ -72,29 +71,26 @@ export const TreeNode = ({ fileFolderData }) => {
           </button>
         ) : (
           /** If the current node is not a folder, render it as a p */
-                     <div style={{ display: "flex", alignItems: "center" }}>
-                    <FileIcon extension={computeExtension(fileFolderData)} />
-                    <p
-                        style={{
-                            paddingTop: "5px",
-                            fontSize: "15px",
-                            cursor: "pointer",
-                            marginLeft: "5px",
-                            // color: "black"
-                        }}
-                    >
-                        {fileFolderData.name}
-                    </p>
-                </div>
-            )}
-            {visibility[fileFolderData.name] && fileFolderData.children && (
-                fileFolderData.children.map((child) => (
-                    <TreeNode 
-                        fileFolderData={child}
-                        key={child.name}
-                    />
-                ))
-            )}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <FileIcon extension={computeExtension(fileFolderData)} />
+            <p
+              style={{
+                paddingTop: "5px",
+                fontSize: "15px",
+                cursor: "pointer",
+                marginLeft: "5px",
+                // color: "black"
+              }}
+            >
+              {fileFolderData.name}
+            </p>
+          </div>
+        )}
+        {visibility[fileFolderData.name] &&
+          fileFolderData.children &&
+          fileFolderData.children.map((child) => (
+            <TreeNode fileFolderData={child} key={child.name} />
+          ))}
       </div>
     )
   );
