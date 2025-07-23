@@ -1,23 +1,22 @@
 import { useParams } from "react-router-dom";
 import { useTreeStructureStore } from "../../../store/treeStructureStore";
 import { useEffect } from "react";
+import { TreeNode } from "../../molecules/TreeNode/TreeNode";
 
 export const TreeStructure = () => {
   const { treeStructure, setTreeStructure } = useTreeStructureStore();
-  const { projectId } = useParams();
 
   useEffect(() => {
     if (treeStructure) {
       console.log("Tree Structure is", treeStructure);
     } else {
-      setTreeStructure(projectId);
+      setTreeStructure();
     }
-  }, [projectId, setTreeStructure, treeStructure]);
+  }, [setTreeStructure, treeStructure]);
 
   return (
     <div>
-      hello Tree Structure
-      <div>hello Tree Structure</div>
+      <TreeNode fileFolderData={treeStructure} />
     </div>
   );
 };
