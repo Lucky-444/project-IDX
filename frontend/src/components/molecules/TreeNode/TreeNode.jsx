@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { FileIcon } from "../../atoms/FileIcon/FileIcon";
-// import { useEditorSocketStore } from "../../../store/editorSocketStore";
+import { useEditorSocketStore } from "../../../store/editorSocketStore";
+
 // import { useFileContextMenuStore } from "../../../store/fileContextMenuStore";
 
 export const TreeNode = ({ fileFolderData }) => {
   const [visibility, setVisibility] = useState({});
+  const {editorSocket} = useEditorSocketStore();
   function toggleVisibility(name) {
     setVisibility({
       ...visibility,
@@ -81,6 +83,7 @@ export const TreeNode = ({ fileFolderData }) => {
                 marginLeft: "5px",
                 // color: "black"
               }}
+              onDoubleClick={() => handleDoubleClick(fileFolderData)}
             >
               {fileFolderData.name}
             </p>

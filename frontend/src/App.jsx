@@ -1,15 +1,13 @@
-import { useState } from "react";
 import "./App.css";
-import { PingComponent } from "./components/atoms/pingComponent";
 import { Routess } from "./Routes";
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 
 
 
 
 function App() {
-  const socket = io(import.meta.env.VITE_BACKEND_URL)
-  const [isVisible, setIsVisible] = useState(false);
+  // const socket = io(import.meta.env.VITE_BACKEND_URL)
+
   return (
     <>
       {/* <button onClick={() => setIsVisible(!isVisible)}>Toggle</button>
