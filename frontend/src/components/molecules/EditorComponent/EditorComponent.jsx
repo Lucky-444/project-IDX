@@ -2,6 +2,7 @@ import Editor from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 import { useEditorSocketStore } from "../../../store/editorSocketStore.js";
 import { useActiveFileTabStore } from "../../../store/activeFileTabStore";
+import { extensionToFileType } from "../../../utils/extensionToFileType.js";
 
 export const EditorComponent = () => {
   const [editorState, setEditorState] = useState({
@@ -64,7 +65,7 @@ export const EditorComponent = () => {
             fontSize: 18,
             fontFamily: "monospace",
           }}
-          // language={extensionToFileType(activeFileTab?.extension)}
+          language={extensionToFileType(activeFileTab?.extension)}
           onChange={handleChange}
           value={
             activeFileTab?.value
