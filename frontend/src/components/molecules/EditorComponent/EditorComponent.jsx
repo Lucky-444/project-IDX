@@ -8,8 +8,11 @@ export const EditorComponent = () => {
     theme: null,
   });
 
+  let timerId = null;
+
+
   const {editorSocket} = useEditorSocketStore();
-  const { activeFileTab,setActiveFileTab} = useActiveFileTabStore();
+  const { activeFileTab } = useActiveFileTabStore();
 
   async function downloadTheme() {
     const response = await fetch("/Dracula.json");
@@ -21,22 +24,39 @@ export const EditorComponent = () => {
     monaco.editor.setTheme("dracula");
   }
 
+  function handleChange(value){
 
-  editorSocket?.on("readFileSuccess" , (data) => {
-    console.log("ReadFile Data" , data);
-    setActiveFileTab(data.path , data.value);
+    // implementation of debouncing
+    //example sanket -> when user type s new timer start
+    // when user type 'a' -> clear all old timer for that the timer of 's' is cleared
+    // when user type 'n' -> clear all old timer for that the timer of 's
+    // and 'a' is cleared
+    // when user type 'k' -> clear all old timer for that the timer of 's
+    // and 'a' and 'n' is cleared
+    if(timerId != null){
+      clearTimeout(timerId);
+    }
+    //set the new timer 
+    timerId =  setTimeout(() => {
+          const editorContent = value;
+          editorSocket.emit("writeFile",{
+         data : editorContent,
+         pathToFileOrFolder : activeFileTab.path,
+    })
+     }, 2000);
     
-  })
+  }
 
   useEffect(() => {
     downloadTheme();
   }, []);
 
+  //monaco Editor implementattion
   return (
     <>
       {editorState.theme && 
         <Editor
-          height="80vh"
+          height="100vh"
           width={"100%"}
           defaultLanguage={undefined}
           defaultValue="// Welcome to the playground"
@@ -45,7 +65,7 @@ export const EditorComponent = () => {
             fontFamily: "monospace",
           }}
           // language={extensionToFileType(activeFileTab?.extension)}
-          // onChange={handleChange}
+          onChange={handleChange}
           value={
             activeFileTab?.value
               ? activeFileTab.value
