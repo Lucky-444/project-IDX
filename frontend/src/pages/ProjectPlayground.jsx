@@ -6,12 +6,15 @@ import { useEffect } from "react";
 import { useTreeStructureStore } from "../store/treeStructureStore.js";
 import { useEditorSocketStore } from "../store/editorSocketStore.js";
 import { io } from "socket.io-client";
+import { BrowserTerminal } from "../components/molecules/BrowserTerminal/BrowserTerminal.jsx";
+import { useTerminalSocketStore } from "../store/terminalSocketStore.js";
 
 export const ProjectPlayground = () => {
   const { projectId: projectIdFromUrl } = useParams();
   const { setProjectId, projectId } = useTreeStructureStore();
 
   const { editorSocket, setEditorSocket } = useEditorSocketStore();
+  const {setTerminalSocket} = useTerminalSocketStore();
 
   console.log("projecId from Url", projectIdFromUrl);
 
@@ -27,9 +30,11 @@ export const ProjectPlayground = () => {
           },
         }
       );
+      const ws = new WebSocket("ws://localhost:3000/terminal?projectId="+projectIdFromUrl);
+      setTerminalSocket(ws);
       setEditorSocket(editorSocketConn);
     }
-  }, [setProjectId, projectIdFromUrl, setEditorSocket]);
+  }, [setProjectId, projectIdFromUrl, setEditorSocket , setTerminalSocket]);
 
   return (
     <>
@@ -53,6 +58,9 @@ export const ProjectPlayground = () => {
       </div>
 
       <EditorButton />
+      <div>
+        <BrowserTerminal />
+      </div>
     </>
   );
 };
