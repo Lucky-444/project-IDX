@@ -36,4 +36,6 @@ READ THIS BLOG
 ## For editor component use Monaco Editor in react
 https://www.npmjs.com/package/@monaco-editor/react
 
-
+### allotment
+`npm i allotment`
+`       ``

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { useActiveFileTabStore } from "./activeFileTabStore.js";
 import { useTreeStructureStore } from "./treeStructureStore.js";
+import { usePortStore } from "./portStore.js";
 
 export const useEditorSocketStore = create((set) => ({
   editorSocket: null,
@@ -12,7 +13,7 @@ export const useEditorSocketStore = create((set) => ({
     const projectTreeStructureSetter =
       useTreeStructureStore.getState().setTreeStructure;
     //without called the hook we use the setter from the store by using this method
-
+    const portSetter = usePortStore.getState().setPort;
     incomingSocket.on("readFileSuccess", (data) => {
       console.log("ReadFile Data", data);
       //return the back to the active file tab store
@@ -33,7 +34,7 @@ export const useEditorSocketStore = create((set) => ({
 
     incomingSocket?.on("getPortSuccess", ({ port }) => {
       console.log("port data", port);
-      // portSetter(port);
+      portSetter(port);
     });
 
     set({
